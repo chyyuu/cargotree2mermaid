@@ -156,3 +156,8 @@ embedded-hal
 critical-section
 tock-registers
 aarch64-cpu
+bit
+x2apic
+multiboot
+uart_16550
+ns16550a

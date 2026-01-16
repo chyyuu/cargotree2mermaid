@@ -41,10 +41,18 @@ git clone git@github.com:arceos-org/arceos-apps.git
 cd arceos-apps
 # setup development env ...
 
+# riscv64 helloworld
 cargo tree -p arceos-helloworld --target riscv64gc-unknown-none-elf --features "axstd/defplat axstd/log-level-info" >crates-dep.txt
 
-#OR
+# aarch64 helloworld
 cargo tree -p arceos-helloworld --target aarch64-unknown-none-softfloat --features "axstd/defplat axstd/log-level-info" >crates-dep.txt
+
+#x86_64 helloworld
+cargo tree -p arceos-helloworld --target x86_64-unknown-none --features "axstd/defplat axstd/log-level-info" >crates-dep.txt
+
+#loongarch64 helloworld
+cargo tree -p arceos-helloworld --target loongarch64-unknown-none-softfloat --features "axstd/defplat axstd/log-level-info" >crates-dep.txt
+
 # use cargotree2mermaid.py -i SOME-PATH/crates-dep.txt ...
 ```
 
