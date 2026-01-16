@@ -71,44 +71,44 @@ def default_output_path(input_path, level, direction):
 
 def main():
     parser = argparse.ArgumentParser(
-        description="从 Mermaid 依赖关系图中提取指定层级的节点列表"
+        description="Extract node list at a specific dependency level from Mermaid graph"
     )
     parser.add_argument(
         "-i",
         "--input",
         required=True,
-        help="Mermaid 依赖图文件路径",
+        help="Mermaid dependency graph file path",
     )
     parser.add_argument(
         "-n",
         "--level",
         type=int,
         required=True,
-        help="依赖层级 (NUM >= 0)",
+        help="Dependency level (NUM >= 0)",
     )
     direction_group = parser.add_mutually_exclusive_group(required=True)
     direction_group.add_argument(
         "-u",
         "--up",
         action="store_true",
-        help="向上依赖层级（默认方向）",
+        help="Upward dependency level (default direction)",
     )
     direction_group.add_argument(
         "-d",
         "--down",
         action="store_true",
-        help="向下依赖层级（反向）",
+        help="Downward dependency level (reversed direction)",
     )
     parser.add_argument(
         "-o",
         "--output",
         default=None,
-        help="输出文件路径，默认基于输入文件名生成",
+        help="Output file path; print to screen if not provided",
     )
     args = parser.parse_args()
 
     if args.level < 0:
-        raise SystemExit("NUM 必须 >= 0")
+        raise SystemExit("NUM must be >= 0")
 
     with open(args.input, "r", encoding="utf-8") as f:
         lines = f.readlines()
@@ -116,8 +116,6 @@ def main():
     nodes, edges = parse_mermaid_edges(lines)
     direction = "down" if args.down else "up"
     distances = compute_levels(nodes, edges, direction)
-
-    output_path = args.output or default_output_path(args.input, args.level, direction)
 
     name_map = {node_id: label_to_name(label) for node_id, label in nodes.items()}
     dependency_map = {}
@@ -132,10 +130,15 @@ def main():
         deps_text = ", ".join(deps)
         level_nodes.append(f"{name_map.get(node_id, node_id)}  :   {deps_text}")
 
-    with open(output_path, "w", encoding="utf-8") as f:
-        f.write("\n".join(level_nodes) + "\n")
+    output_text = "\n".join(level_nodes) + "\n"
 
-    print(f"已输出层级 {args.level} 的节点列表到 {output_path}")
+    if args.output:
+        output_path = args.output
+        with open(output_path, "w", encoding="utf-8") as f:
+            f.write(output_text)
+        print(f"Level {args.level} node list saved to {output_path}")
+    else:
+        print(output_text, end="")
 
 
 if __name__ == "__main__":

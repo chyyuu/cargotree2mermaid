@@ -1,0 +1,151 @@
+arceos-helloworld v0.1.0 (/home/chyyuu/thecodes/arceos-apps/rust/helloworld)
+└── axstd v0.2.0 (/home/chyyuu/thecodes/arceos-apps/.arceos/ulib/axstd)
+    ├── arceos_api v0.2.0 (/home/chyyuu/thecodes/arceos-apps/.arceos/api/arceos_api)
+    │   ├── axconfig v0.2.0 (/home/chyyuu/thecodes/arceos-apps/.arceos/modules/axconfig)
+    │   │   └── axconfig-macros v0.2.0 (proc-macro)
+    │   │       ├── axconfig-gen v0.2.0
+    │   │       │   ├── clap v4.5.45
+    │   │       │   │   ├── clap_builder v4.5.44
+    │   │       │   │   │   ├── anstream v0.6.20
+    │   │       │   │   │   │   ├── anstyle v1.0.11
+    │   │       │   │   │   │   ├── anstyle-parse v0.2.7
+    │   │       │   │   │   │   │   └── utf8parse v0.2.2
+    │   │       │   │   │   │   ├── anstyle-query v1.1.4
+    │   │       │   │   │   │   ├── colorchoice v1.0.4
+    │   │       │   │   │   │   ├── is_terminal_polyfill v1.70.1
+    │   │       │   │   │   │   └── utf8parse v0.2.2
+    │   │       │   │   │   ├── anstyle v1.0.11
+    │   │       │   │   │   ├── clap_lex v0.7.5
+    │   │       │   │   │   └── strsim v0.11.1
+    │   │       │   │   └── clap_derive v4.5.45 (proc-macro)
+    │   │       │   │       ├── heck v0.5.0
+    │   │       │   │       ├── proc-macro2 v1.0.101
+    │   │       │   │       │   └── unicode-ident v1.0.18
+    │   │       │   │       ├── quote v1.0.40
+    │   │       │   │       │   └── proc-macro2 v1.0.101 (*)
+    │   │       │   │       └── syn v2.0.106
+    │   │       │   │           ├── proc-macro2 v1.0.101 (*)
+    │   │       │   │           ├── quote v1.0.40 (*)
+    │   │       │   │           └── unicode-ident v1.0.18
+    │   │       │   └── toml_edit v0.22.27
+    │   │       │       ├── indexmap v2.10.0
+    │   │       │       │   ├── equivalent v1.0.2
+    │   │       │       │   └── hashbrown v0.15.5
+    │   │       │       ├── toml_datetime v0.6.11
+    │   │       │       ├── toml_write v0.1.2
+    │   │       │       └── winnow v0.7.12
+    │   │       ├── proc-macro2 v1.0.101 (*)
+    │   │       ├── quote v1.0.40 (*)
+    │   │       └── syn v2.0.106 (*)
+    │   ├── axerrno v0.1.0
+    │   │   └── log v0.4.21
+    │   ├── axfeat v0.2.0 (/home/chyyuu/thecodes/arceos-apps/.arceos/api/axfeat)
+    │   │   ├── axhal v0.2.0 (/home/chyyuu/thecodes/arceos-apps/.arceos/modules/axhal)
+    │   │   │   ├── axconfig v0.2.0 (/home/chyyuu/thecodes/arceos-apps/.arceos/modules/axconfig) (*)
+    │   │   │   ├── axcpu v0.2.2
+    │   │   │   │   ├── cfg-if v1.0.3
+    │   │   │   │   ├── linkme v0.3.33
+    │   │   │   │   │   └── linkme-impl v0.3.33 (proc-macro)
+    │   │   │   │   │       ├── proc-macro2 v1.0.101 (*)
+    │   │   │   │   │       ├── quote v1.0.40 (*)
+    │   │   │   │   │       └── syn v2.0.106 (*)
+    │   │   │   │   ├── log v0.4.21
+    │   │   │   │   ├── loongArch64 v0.2.5
+    │   │   │   │   │   ├── bit_field v0.10.2
+    │   │   │   │   │   └── bitflags v2.9.2
+    │   │   │   │   ├── memory_addr v0.4.0
+    │   │   │   │   ├── page_table_entry v0.5.5
+    │   │   │   │   │   ├── bitflags v2.9.2
+    │   │   │   │   │   └── memory_addr v0.4.0
+    │   │   │   │   ├── page_table_multiarch v0.5.5
+    │   │   │   │   │   ├── log v0.4.21
+    │   │   │   │   │   ├── memory_addr v0.4.0
+    │   │   │   │   │   └── page_table_entry v0.5.5 (*)
+    │   │   │   │   └── static_assertions v1.1.0
+    │   │   │   ├── axlog v0.2.0 (/home/chyyuu/thecodes/arceos-apps/.arceos/modules/axlog)
+    │   │   │   │   ├── cfg-if v1.0.3
+    │   │   │   │   ├── crate_interface v0.1.4 (proc-macro)
+    │   │   │   │   │   ├── proc-macro2 v1.0.101 (*)
+    │   │   │   │   │   ├── quote v1.0.40 (*)
+    │   │   │   │   │   └── syn v2.0.106 (*)
+    │   │   │   │   ├── kspin v0.1.1
+    │   │   │   │   │   ├── cfg-if v1.0.3
+    │   │   │   │   │   └── kernel_guard v0.1.2
+    │   │   │   │   │       ├── cfg-if v1.0.3
+    │   │   │   │   │       └── crate_interface v0.1.4 (proc-macro) (*)
+    │   │   │   │   └── log v0.4.21
+    │   │   │   ├── axplat v0.3.0
+    │   │   │   │   ├── axplat-macros v0.1.0 (proc-macro)
+    │   │   │   │   │   ├── proc-macro2 v1.0.101 (*)
+    │   │   │   │   │   ├── quote v1.0.40 (*)
+    │   │   │   │   │   └── syn v2.0.106 (*)
+    │   │   │   │   ├── bitflags v2.9.2
+    │   │   │   │   ├── const-str v0.6.4
+    │   │   │   │   ├── crate_interface v0.1.4 (proc-macro) (*)
+    │   │   │   │   ├── kspin v0.1.1 (*)
+    │   │   │   │   └── memory_addr v0.4.0
+    │   │   │   ├── axplat-loongarch64-qemu-virt v0.3.0
+    │   │   │   │   ├── axconfig-macros v0.2.0 (proc-macro) (*)
+    │   │   │   │   ├── axcpu v0.2.2 (*)
+    │   │   │   │   ├── axplat v0.3.0 (*)
+    │   │   │   │   ├── kspin v0.1.1 (*)
+    │   │   │   │   ├── lazyinit v0.2.2
+    │   │   │   │   ├── log v0.4.21
+    │   │   │   │   ├── loongArch64 v0.2.5 (*)
+    │   │   │   │   ├── ns16550a v0.5.0
+    │   │   │   │   └── page_table_entry v0.5.5 (*)
+    │   │   │   ├── cfg-if v1.0.3
+    │   │   │   ├── heapless v0.8.0
+    │   │   │   │   ├── hash32 v0.3.1
+    │   │   │   │   │   └── byteorder v1.5.0
+    │   │   │   │   └── stable_deref_trait v1.2.0
+    │   │   │   ├── kernel_guard v0.1.2 (*)
+    │   │   │   ├── lazyinit v0.2.2
+    │   │   │   ├── log v0.4.21
+    │   │   │   ├── memory_addr v0.4.0
+    │   │   │   └── percpu v0.2.0
+    │   │   │       ├── cfg-if v1.0.3
+    │   │   │       └── percpu_macros v0.2.0 (proc-macro)
+    │   │   │           ├── proc-macro2 v1.0.101 (*)
+    │   │   │           ├── quote v1.0.40 (*)
+    │   │   │           └── syn v2.0.106 (*)
+    │   │   │   [build-dependencies]
+    │   │   │   └── axconfig v0.2.0 (/home/chyyuu/thecodes/arceos-apps/.arceos/modules/axconfig)
+    │   │   │       └── axconfig-macros v0.2.0 (proc-macro) (*)
+    │   │   ├── axlog v0.2.0 (/home/chyyuu/thecodes/arceos-apps/.arceos/modules/axlog) (*)
+    │   │   └── axruntime v0.2.0 (/home/chyyuu/thecodes/arceos-apps/.arceos/modules/axruntime)
+    │   │       ├── axconfig v0.2.0 (/home/chyyuu/thecodes/arceos-apps/.arceos/modules/axconfig) (*)
+    │   │       ├── axhal v0.2.0 (/home/chyyuu/thecodes/arceos-apps/.arceos/modules/axhal) (*)
+    │   │       ├── axlog v0.2.0 (/home/chyyuu/thecodes/arceos-apps/.arceos/modules/axlog) (*)
+    │   │       ├── axplat v0.3.0 (*)
+    │   │       ├── chrono v0.4.41
+    │   │       │   └── num-traits v0.2.19
+    │   │       │       [build-dependencies]
+    │   │       │       └── autocfg v1.5.0
+    │   │       ├── crate_interface v0.1.4 (proc-macro) (*)
+    │   │       └── ctor_bare v0.2.1
+    │   │           └── ctor_bare_macros v0.2.1 (proc-macro)
+    │   │               ├── proc-macro2 v1.0.101 (*)
+    │   │               ├── quote v1.0.40 (*)
+    │   │               └── syn v2.0.106 (*)
+    │   ├── axhal v0.2.0 (/home/chyyuu/thecodes/arceos-apps/.arceos/modules/axhal) (*)
+    │   ├── axio v0.1.1
+    │   │   └── axerrno v0.1.0 (*)
+    │   ├── axlog v0.2.0 (/home/chyyuu/thecodes/arceos-apps/.arceos/modules/axlog) (*)
+    │   ├── axruntime v0.2.0 (/home/chyyuu/thecodes/arceos-apps/.arceos/modules/axruntime) (*)
+    │   └── axsync v0.2.0 (/home/chyyuu/thecodes/arceos-apps/.arceos/modules/axsync)
+    │       ├── axtask v0.2.0 (/home/chyyuu/thecodes/arceos-apps/.arceos/modules/axtask)
+    │       │   ├── axhal v0.2.0 (/home/chyyuu/thecodes/arceos-apps/.arceos/modules/axhal) (*)
+    │       │   ├── cfg-if v1.0.3
+    │       │   ├── lazyinit v0.2.2
+    │       │   └── log v0.4.21
+    │       ├── kspin v0.1.1 (*)
+    │       └── lock_api v0.4.13
+    │           └── scopeguard v1.2.0
+    │           [build-dependencies]
+    │           └── autocfg v1.5.0
+    ├── axerrno v0.1.0 (*)
+    ├── axfeat v0.2.0 (/home/chyyuu/thecodes/arceos-apps/.arceos/api/axfeat) (*)
+    ├── axio v0.1.1 (*)
+    ├── kspin v0.1.1 (*)
+    └── lock_api v0.4.13 (*)

@@ -109,37 +109,37 @@ def parse_cargo_tree(lines, blacklist):
 
 def main():
     parser = argparse.ArgumentParser(
-        description="将 cargo tree 输出转换为 Mermaid 依赖图"
+        description="Convert cargo tree output to a Mermaid dependency graph"
     )
     parser.add_argument(
         "-i",
         "--input",
         default="crates-dep.txt",
-        help="cargo tree 输出文件路径",
+        help="Path to cargo tree output file",
     )
     parser.add_argument(
         "-b",
         "--blacklist",
         default=None,
-        help="黑名单列表文件路径，文件内用逗号分隔 crate 名",
+        help="Blacklist file path; crate names separated by commas or whitespace",
     )
     parser.add_argument(
         "-o",
         "--output",
-        default="dependencies.mmd",
-        help="Mermaid 输出文件路径",
+        default=None,
+        help="Mermaid output file path; print to screen if not provided",
     )
     parser.add_argument(
         "-w",
         "--white",
         default=None,
-        help="白名单输出文件路径，输出 cargo tree 中不在黑名单的 crate 名",
+        help="Whitelist output file path; crates in cargo tree but not in blacklist",
     )
     parser.add_argument(
         "--direction",
         default="TD",
         choices=["TD", "TB", "LR", "RL", "BT"],
-        help="Mermaid 图方向",
+        help="Mermaid graph direction",
     )
     args = parser.parse_args()
 
@@ -161,15 +161,20 @@ def main():
             f"    {parent}[{nodes[parent]}] --> {child}[{nodes[child]}]"
         )
 
-    with open(args.output, "w", encoding="utf-8") as f:
-        f.write("\n".join(mermaid_lines) + "\n")
+    output_text = "\n".join(mermaid_lines) + "\n"
+    if args.output:
+        with open(args.output, "w", encoding="utf-8") as f:
+            f.write(output_text)
+    else:
+        print(output_text, end="")
 
     if args.white:
         whitelist = sorted(crate for crate in crates if crate not in blacklist)
         with open(args.white, "w", encoding="utf-8") as f:
             f.write("\n".join(whitelist) + "\n")
 
-    print(f"转换完成！依赖关系图已保存为 {args.output}")
+    if args.output:
+        print(f"Done! Dependency graph saved to {args.output}")
 
 if __name__ == "__main__":
     main()
