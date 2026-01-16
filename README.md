@@ -18,3 +18,5 @@ git clone git@github.com:Starry-OS/StarryOS.git
 cd StarryOS
 cargo tree >crates-dep.txt
 ```
+
+The crates in black.list.txt are not from rcore-os, arceos-org, Starry-OS, arceos-hypervisor github repos.
