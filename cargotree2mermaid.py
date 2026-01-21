@@ -176,7 +176,17 @@ def main():
         print(output_text, end="")
 
     if args.white:
-        whitelist = sorted(crate for crate in crates if crate not in blacklist)
+        used_node_ids = set()
+        for parent, child in dependencies:
+            used_node_ids.add(parent)
+            used_node_ids.add(child)
+        whitelist = sorted(
+            {
+                nodes[node_id].split()[0]
+                for node_id in used_node_ids
+                if node_id in nodes
+            }
+        )
         with open(args.white, "w", encoding="utf-8") as f:
             f.write("\n".join(whitelist) + "\n")
 
