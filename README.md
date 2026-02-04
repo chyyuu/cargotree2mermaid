@@ -74,10 +74,16 @@ cargo tree | ./cargotree2mermaid.py | ./mermaid_level_nodes.py -n 2 -u
 - `-n, --node`：要查询的节点名称（crate 名称，不需要版本号）
 - `-u, --up`：查询向上依赖（即哪些节点依赖这个节点）
 - `-d, --down`：查询向下依赖（即这个节点依赖哪些节点）
+- `-l, --level`：最大依赖层级深度（可选，不设置则无限制）
 - `-o, --output`：输出文件；不提供则输出到屏幕
 
 ### 用法示例
-查询节点的向下依赖（这个节点依赖了什么）：
+查询节点的向下依赖（这个节点依赖了什么），仅限1层深度：
+```
+./nodedeps.py -i ./example/crates-dep.mmd -d -n kernel-alloc -l 1
+```
+
+查询节点的向下依赖（无深度限制）：
 ```
 ./nodedeps.py -i ./example/crates-dep.mmd -d -n kernel-alloc
 ```
@@ -89,14 +95,14 @@ graph TD
     kernel_alloc_v0_1_0[kernel-alloc v0.1.0] --> page_table_v0_0_6[page-table v0.0.6]
 ```
 
-查询节点的向上依赖（什么节点依赖了这个节点）：
+查询节点的向上依赖（什么节点依赖了这个节点），仅限1层深度：
 ```
-./nodedeps.py -i ./example/crates-dep.mmd -u -n kernel-alloc
+./nodedeps.py -i ./example/crates-dep.mmd -u -n kernel-alloc -l 1
 ```
 
-使用管道和输出到文件：
+使用管道和输出到文件，限制深度为2层：
 ```
-cat ./example/crates-dep.mmd | ./nodedeps.py -d -n kernel-alloc -o /tmp/kernel-alloc-deps.mmd
+cat ./example/crates-dep.mmd | ./nodedeps.py -d -n kernel-alloc -l 2 -o /tmp/kernel-alloc-deps.mmd
 ```
 
 ## 综合示例：从 cargo tree 到依赖分析

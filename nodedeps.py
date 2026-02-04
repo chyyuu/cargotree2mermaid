@@ -45,14 +45,21 @@ def find_node_id_by_name(nodes, name):
     return None
 
 
-def collect_downstream_deps(node_id, edges, nodes):
-    """Collect all downstream dependencies (nodes that this node depends on)"""
+def collect_downstream_deps(node_id, edges, nodes, max_level=None):
+    """Collect downstream dependencies (nodes that this node depends on)
+    
+    Args:
+        node_id: Starting node ID
+        edges: List of (parent, child) edges
+        nodes: Dict of node_id -> label
+        max_level: Maximum depth level (None for unlimited)
+    """
     downstream = set()
     visited = set()
-    queue = [node_id]
+    queue = [(node_id, 0)]  # (node_id, level)
     
     while queue:
-        current = queue.pop(0)
+        current, level = queue.pop(0)
         if current in visited:
             continue
         visited.add(current)
@@ -60,20 +67,29 @@ def collect_downstream_deps(node_id, edges, nodes):
         # Find children of current node
         for parent, child in edges:
             if parent == current and child not in visited:
-                downstream.add(child)
-                queue.append(child)
+                # Check if we've exceeded max level
+                if max_level is None or level + 1 <= max_level:
+                    downstream.add(child)
+                    queue.append((child, level + 1))
     
     return downstream
 
 
-def collect_upstream_deps(node_id, edges, nodes):
-    """Collect all upstream dependencies (nodes that depend on this node)"""
+def collect_upstream_deps(node_id, edges, nodes, max_level=None):
+    """Collect upstream dependencies (nodes that depend on this node)
+    
+    Args:
+        node_id: Starting node ID
+        edges: List of (parent, child) edges
+        nodes: Dict of node_id -> label
+        max_level: Maximum depth level (None for unlimited)
+    """
     upstream = set()
     visited = set()
-    queue = [node_id]
+    queue = [(node_id, 0)]  # (node_id, level)
     
     while queue:
-        current = queue.pop(0)
+        current, level = queue.pop(0)
         if current in visited:
             continue
         visited.add(current)
@@ -81,8 +97,10 @@ def collect_upstream_deps(node_id, edges, nodes):
         # Find parents of current node
         for parent, child in edges:
             if child == current and parent not in visited:
-                upstream.add(parent)
-                queue.append(parent)
+                # Check if we've exceeded max level
+                if max_level is None or level + 1 <= max_level:
+                    upstream.add(parent)
+                    queue.append((parent, level + 1))
     
     return upstream
 
@@ -139,6 +157,13 @@ def main():
         default=None,
         help="Output file path; print to screen if not provided",
     )
+    parser.add_argument(
+        "-l",
+        "--level",
+        type=int,
+        default=None,
+        help="Maximum dependency level (None for unlimited)",
+    )
     args = parser.parse_args()
 
     lines = _read_input_lines(args.input)
@@ -151,9 +176,9 @@ def main():
 
     # Collect dependencies in the specified direction
     if args.up:
-        target_nodes = collect_upstream_deps(target_node_id, edges, nodes)
+        target_nodes = collect_upstream_deps(target_node_id, edges, nodes, args.level)
     else:  # args.down
-        target_nodes = collect_downstream_deps(target_node_id, edges, nodes)
+        target_nodes = collect_downstream_deps(target_node_id, edges, nodes, args.level)
 
     # Always include the target node itself
     target_nodes.add(target_node_id)
