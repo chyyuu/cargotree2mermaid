@@ -2,6 +2,7 @@
 import argparse
 import os
 import re
+import sys
 from collections import deque
 
 
@@ -69,6 +70,13 @@ def default_output_path(input_path, level, direction):
     return f"{base}.{direction}.level{level}.txt"
 
 
+def _read_input_lines(input_path):
+    if input_path and input_path != "-":
+        with open(input_path, "r", encoding="utf-8") as f:
+            return f.readlines()
+    return sys.stdin.read().splitlines(keepends=True)
+
+
 def main():
     parser = argparse.ArgumentParser(
         description="Extract node list at a specific dependency level from Mermaid graph"
@@ -76,8 +84,8 @@ def main():
     parser.add_argument(
         "-i",
         "--input",
-        required=True,
-        help="Mermaid dependency graph file path",
+        default=None,
+        help="Mermaid dependency graph file path; use '-' or omit to read from stdin",
     )
     parser.add_argument(
         "-n",
@@ -110,8 +118,7 @@ def main():
     if args.level < 0:
         raise SystemExit("NUM must be >= 0")
 
-    with open(args.input, "r", encoding="utf-8") as f:
-        lines = f.readlines()
+    lines = _read_input_lines(args.input)
 
     nodes, edges = parse_mermaid_edges(lines)
     direction = "down" if args.down else "up"

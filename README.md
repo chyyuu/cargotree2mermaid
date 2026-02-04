@@ -1,69 +1,69 @@
-# cargotree2mermaid.py
-Convert file created by 'cargo tree' to mermaid-format file.
+# 简介
+本仓库提供两个小工具，用于把 `cargo tree` 输出转换为 Mermaid 依赖图，并进一步按层级提取依赖节点列表。两个脚本都支持：
 
-# mermaid_level_nodes.py
-Give the dependency info of the node in mermaid-format file.
+- 从文件输入（`-i FILE`）
+- 从 stdin 输入（省略 `-i` 或 `-i -`），便于用管道串联
+- 输出到文件（`-o FILE`）或直接打印到屏幕
 
-# run
+## cargotree2mermaid.py
+将 `cargo tree` 的文本输出转换为 Mermaid 依赖图（`graph TD`/`LR` 等）。
+
+### 主要参数
+- `-i, --input`：输入文件路径；省略或 `-i -` 表示从 stdin 读取
+- `-b, --blacklist`：黑名单文件，按逗号或空白分隔 crate 名称
+- `-o, --output`：Mermaid 输出文件；不提供则输出到屏幕
+- `-w, --white`：输出白名单文件（实际出现在依赖图中的 crate）
+- `--direction`：Mermaid 方向（`TD/TB/LR/RL/BT`）
+
+### 用法示例
+从文件读取并生成 Mermaid + whitelist：
 ```
-./cargotree2mermaid.py -h
-usage: cargotree2mermaid.py [-h] [-i INPUT] [-b BLACKLIST] [-o OUTPUT] [-w WHITE]
-                            [--direction {TD,TB,LR,RL,BT}]
-
-Convert cargo tree output to a Mermaid dependency graph
-
-options:
-  -h, --help            show this help message and exit
-  -i INPUT, --input INPUT
-                        Path to cargo tree output file
-  -b BLACKLIST, --blacklist BLACKLIST
-                        Blacklist file path; crate names separated by commas or whitespace
-  -o OUTPUT, --output OUTPUT
-                        Mermaid output file path; print to screen if not provided
-  -w WHITE, --white WHITE
-                        Whitelist output file path; crates in cargo tree but not in blacklist
-  --direction {TD,TB,LR,RL,BT}
-                        Mermaid graph direction
-
-
 ./cargotree2mermaid.py -i ./example/crates-dep.txt -b ./example/blacklist.txt -o ./example/crates-dep.mmd -w ./example/whitelist.txt
-# You can check the mermaid file ./example/crates-dep.mmd and whitelist file ./example/whitelist.txt
-# If -o is not provided, mermaid output will be printed to screen
+```
 
-# build png from mmd
+使用管道（stdin）：
+```
+cargo tree | ./cargotree2mermaid.py > crates-dep.mmd
+```
+
+生成图片（可选）：
+```
 mmdc -s 4 -i crates-dep.mmd -o crates-dep.png
-#if no mmdc, install it: npm install -g @mermaid-js/mermaid-cli
-
-#show png file
+# 若无 mmdc: npm install -g @mermaid-js/mermaid-cli
 feh crates-dep.png
-#if no feh, install it: sudo apt install feh -y
+# 若无 feh: sudo apt install feh -y
+```
 
+## mermaid_level_nodes.py
+从 Mermaid 依赖图中提取某一“层级”的节点列表，并列出其直接依赖。
 
-./mermaid_level_nodes.py -h
-usage: mermaid_level_nodes.py [-h] -i INPUT -n LEVEL (-u | -d) [-o OUTPUT]
+### 主要参数
+- `-i, --input`：Mermaid 文件；省略或 `-i -` 表示从 stdin 读取
+- `-n, --level`：依赖层级（`NUM >= 0`）
+- `-u, --up`：向上依赖（默认方向）
+- `-d, --down`：向下依赖（反向方向）
+- `-o, --output`：输出文件；不提供则输出到屏幕
 
-Extract node list at a specific dependency level from Mermaid graph
-
-options:
-  -h, --help            show this help message and exit
-  -i INPUT, --input INPUT
-                        Mermaid dependency graph file path
-  -n LEVEL, --level LEVEL
-                        Dependency level (NUM >= 0)
-  -u, --up              Upward dependency level (default direction)
-  -d, --down            Downward dependency level (reversed direction)
-  -o OUTPUT, --output OUTPUT
-                        Output file path; print to screen if not provided
-
+### 用法示例
+从文件读取并输出到屏幕：
+```
 ./mermaid_level_nodes.py -i ./example/crates-dep.mmd -n 2 -u
-# Output file defaults to ./example/crates-dep.up.level2.txt
-# Each line format: crate  :   dep1, dep2
-# If -o is not provided, output will be printed to screen
+```
 
-./mermaid_level_nodes.py -i ./example/crates-dep.mmd -n 2 -d
-# Output file defaults to ./example/crates-dep.down.level2.txt
-# Each line format: crate  :   dep1, dep2
-# If -o is not provided, output will be printed to screen
+指定输出文件：
+```
+./mermaid_level_nodes.py -i ./example/crates-dep.mmd -n 2 -d -o ./example/level2.down.txt
+```
+
+使用管道（stdin）：
+```
+cat ./example/crates-dep.mmd | ./mermaid_level_nodes.py -n 2 -u
+```
+
+## 组合使用（管道）
+典型场景：直接从 `cargo tree` 输出生成特定层级依赖列表：
+```
+cargo tree | ./cargotree2mermaid.py | ./mermaid_level_nodes.py -n 2 -u
 ```
 # example
 

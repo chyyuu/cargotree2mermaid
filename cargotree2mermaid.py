@@ -1,6 +1,7 @@
 #!/usr/bin/env python3
 import argparse
 import re
+import sys
 
 
 TREE_LINE_RE = re.compile(
@@ -107,6 +108,13 @@ def parse_cargo_tree(lines, blacklist):
 
     return dependencies, nodes, crates
 
+
+def _read_input_lines(input_path):
+    if input_path and input_path != "-":
+        with open(input_path, "r", encoding="utf-8") as f:
+            return f.readlines()
+    return sys.stdin.read().splitlines(keepends=True)
+
 def main():
     parser = argparse.ArgumentParser(
         description="Convert cargo tree output to a Mermaid dependency graph"
@@ -114,8 +122,8 @@ def main():
     parser.add_argument(
         "-i",
         "--input",
-        default="crates-dep.txt",
-        help="Path to cargo tree output file",
+        default=None,
+        help="Path to cargo tree output file; use '-' or omit to read from stdin",
     )
     parser.add_argument(
         "-b",
@@ -143,8 +151,7 @@ def main():
     )
     args = parser.parse_args()
 
-    with open(args.input, "r", encoding="utf-8") as f:
-        lines = f.readlines()
+    lines = _read_input_lines(args.input)
 
     blacklist = set()
     if args.blacklist:
