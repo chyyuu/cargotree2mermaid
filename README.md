@@ -1,5 +1,5 @@
 # 简介
-本仓库提供两个小工具，用于把 `cargo tree` 输出转换为 Mermaid 依赖图，并进一步按层级提取依赖节点列表。两个脚本都支持：
+本仓库提供三个小工具，用于把 `cargo tree` 输出转换为 Mermaid 依赖图，并进一步进行依赖分析。所有脚本都支持：
 
 - 从文件输入（`-i FILE`）
 - 从 stdin 输入（省略 `-i` 或 `-i -`），便于用管道串联
@@ -65,6 +65,50 @@ cat ./example/crates-dep.mmd | ./mermaid_level_nodes.py -n 2 -u
 ```
 cargo tree | ./cargotree2mermaid.py | ./mermaid_level_nodes.py -n 2 -u
 ```
+
+## nodedeps.py
+从 Mermaid 依赖图中提取指定节点的所有直接或递归依赖关系，输出子图。
+
+### 主要参数
+- `-i, --input`：Mermaid 文件；省略或 `-i -` 表示从 stdin 读取
+- `-n, --node`：要查询的节点名称（crate 名称，不需要版本号）
+- `-u, --up`：查询向上依赖（即哪些节点依赖这个节点）
+- `-d, --down`：查询向下依赖（即这个节点依赖哪些节点）
+- `-o, --output`：输出文件；不提供则输出到屏幕
+
+### 用法示例
+查询节点的向下依赖（这个节点依赖了什么）：
+```
+./nodedeps.py -i ./example/crates-dep.mmd -d -n kernel-alloc
+```
+
+输出类似：
+```
+graph TD
+    kernel_alloc_v0_1_0[kernel-alloc v0.1.0] --> customizable_buddy_v0_0_3[customizable-buddy v0.0.3]
+    kernel_alloc_v0_1_0[kernel-alloc v0.1.0] --> page_table_v0_0_6[page-table v0.0.6]
+```
+
+查询节点的向上依赖（什么节点依赖了这个节点）：
+```
+./nodedeps.py -i ./example/crates-dep.mmd -u -n kernel-alloc
+```
+
+使用管道和输出到文件：
+```
+cat ./example/crates-dep.mmd | ./nodedeps.py -d -n kernel-alloc -o /tmp/kernel-alloc-deps.mmd
+```
+
+## 综合示例：从 cargo tree 到依赖分析
+```
+# 方案一：生成完整依赖图，然后查询特定节点
+cargo tree | ./cargotree2mermaid.py -o deps.mmd
+./nodedeps.py -i deps.mmd -d -n kernel-alloc
+
+# 方案二：一行命令（使用管道）
+cargo tree | ./cargotree2mermaid.py | ./nodedeps.py -d -n kernel-alloc
+```
+
 # example
 
 ```
